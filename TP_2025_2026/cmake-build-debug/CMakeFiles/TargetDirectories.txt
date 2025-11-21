@@ -1,0 +1,3 @@
+C:/Users/guilh/OneDrive/Ambiente de Trabalho/foda-se/2ºano/1 semestre/POO/TP_2025_2026/cmake-build-debug/CMakeFiles/TP_2025_2026.dir
+C:/Users/guilh/OneDrive/Ambiente de Trabalho/foda-se/2ºano/1 semestre/POO/TP_2025_2026/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/guilh/OneDrive/Ambiente de Trabalho/foda-se/2ºano/1 semestre/POO/TP_2025_2026/cmake-build-debug/CMakeFiles/rebuild_cache.dir
