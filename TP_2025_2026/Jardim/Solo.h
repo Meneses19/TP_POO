@@ -8,19 +8,20 @@
 #include "../Plantas/Planta.h"
 #include "../Ferramentas/Ferramenta.h"
 #include <memory>
+#include <string>
+
 using namespace std;
+class Planta;
 class Ferramenta;
 
 class Solo {
     int agua;
     int nutrientes;
-    char Simbolo;
-    Planta* planta;
-    Ferramenta* ferramenta;
+    shared_ptr<Planta> planta;
+    shared_ptr<Ferramenta> ferramenta;
 
 public:
     Solo();
-    Solo(string const& tipo);
 
     static int letraParaIndice(char letra);
 
@@ -35,8 +36,12 @@ public:
     shared_ptr<Planta> getPlanta() const;
     void setPlanta(shared_ptr<Planta> p);
     void removerPlanta();
+    bool temPlanta() const;
 
-    char getSimbolo() const;
-    void setSimbolo(char c);
+    shared_ptr<Ferramenta> getFerramenta() const;
+    void setFerramenta(std::shared_ptr<Ferramenta> f);
+    void removerFerramenta();
+    bool temFerramenta() const;
+
 };
 #endif //TP_2025_2026_SOLO_H
