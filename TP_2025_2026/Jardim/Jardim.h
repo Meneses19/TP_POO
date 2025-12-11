@@ -1,16 +1,15 @@
-//
-// Created by Enrique Marques on 29/10/2025.
-//
-
 #ifndef TP_2025_2026_JARDIM_H
 #define TP_2025_2026_JARDIM_H
+
 #include "Solo.h"
-#include "../Jardineiro/Jardineiro.h"
-#include "../Plantas/Planta.h"
-#include "../Ferramentas/Ferramenta.h"
+#include "Jardineiro.h"
+#include "Plantas/Planta.h"
+#include "Ferramentas/Ferramenta.h"
+
 #include <iostream>
 #include <vector>
-#include <memory>
+#include <memory> // shared_ptr
+#include <string>
 
 using namespace std;
 
@@ -30,13 +29,20 @@ public:
 
     void Criargrelha(int l, int c);
     Solo& getSolo(int linha, int coluna);
-    bool posicaoValida(char& linha, char& coluna);
 
-    void adicionarPlanta(shared_ptr<Planta> p);
-    void removerPlantaNaPosicao(const string& pos);
-    shared_ptr<Planta> getPlantaNaPosicao(const string& pos) const;
+    // CORREÇÃO 1: O 'const' TEM de estar aqui
+    bool posicaoValida(int l, int c) const; 
+    bool posicaoValida(char linha, char coluna) const;
+
+    // CORREÇÃO 2: Tem de ser 'bool', não 'void'
+    bool adicionarPlanta(shared_ptr<Planta> p);
+    
+    void removerPlantaNaPosicao(int l, int c);
+    shared_ptr<Planta> getPlantaNaPosicao(int l, int c) const;
 
     void adicionarFerramenta(shared_ptr<Ferramenta> f);
+    void removerFerramenta(shared_ptr<Ferramenta> f);
+
     Jardineiro& getJardineiro();
     void JardineiroEntra(const char& l, const char& c);
     void JardineiroSai();
@@ -46,6 +52,8 @@ public:
 
     int getLinhas() const;
     int getColunas() const;
+
+    void avancarTempo(int instantes);
 };
 
 #endif //TP_2025_2026_JARDIM_H
