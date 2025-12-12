@@ -64,10 +64,6 @@ void Buffer::write(int valor) {
 // Exibe o conteúdo do buffer na consola
 void Buffer::display() {
 
-    matriz[0][0] = 'A';
-    matriz[0][1] = 'B';
-    matriz[1][1] = 'C';
-
     // Cabeçalho das colunas
     cout << "    ";
     for (int j = 0; j < colunas; ++j)

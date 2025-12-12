@@ -1,5 +1,9 @@
 #include "../Utils/Comandos.h"
 #include "Simulador.h"
+#include "Plantas/Cacto.h"
+#include "Plantas/Roseira.h"
+#include "Plantas/ErvaDaninha.h"
+#include "Plantas/Exotica.h"
 
 void mostrarBanner() {
     cout << "******************************************************\n";
@@ -81,11 +85,45 @@ int Simulador::processarComandos(const string& RespostaComando) {
         cout << "\nA executar comando lferr: Listando ferramentas transportadas";
     }
     else if (ComandoParaExecutar[0] == "colhe") {
-        cout << "\nA executar comando colhe na posicao " << ComandoParaExecutar[1] << " " << ComandoParaExecutar[2];
+        char lChar = ComandoParaExecutar[1][0];
+        char cChar = ComandoParaExecutar[1][1];
+        int l = Solo::letraParaIndice(lChar);
+        int c = Solo::letraParaIndice(cChar);
+
+        cout << "\nA colher planta na posicao " << lChar << cChar << "...\n";
+
+        jardim.removerPlantaNaPosicao(l, c);
+        jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "planta") {
-        cout << "\nA executar comando planta na posicao " << ComandoParaExecutar[1] << " " << ComandoParaExecutar[2]
-             << " com tipo " << ComandoParaExecutar[3];
+        char lChar = ComandoParaExecutar[1][0];
+        char cChar = ComandoParaExecutar[1][1];
+        char tipo = tolower(ComandoParaExecutar[2][0]); // Tipo da planta (c, r, e, x)
+
+        int l = Solo::letraParaIndice(lChar);
+        int c = Solo::letraParaIndice(cChar);
+
+        cout << "\nA plantar '" << tipo << "' na posicao " << lChar << cChar << "...\n";
+
+        shared_ptr<Planta> novaPlanta = nullptr;
+
+        switch (tipo) {
+            case 'c': novaPlanta = make_shared<Cacto>(l, c); break;
+            case 'r': novaPlanta = make_shared<Roseira>(l, c); break;
+            case 'e': novaPlanta = make_shared<ErvaDaninha>(l, c); break;
+            case 'a': novaPlanta = make_shared<Exotica>(l, c); break; // Assumindo 'a' ou 'x'
+            case 'x': novaPlanta = make_shared<Exotica>(l, c); break;
+            default: cout << "Tipo de planta desconhecido!\n"; break;
+        }
+        if (novaPlanta) {
+            bool sucesso = jardim.adicionarPlanta(novaPlanta);
+            if (sucesso) {
+                cout << "Planta adicionada com sucesso!\n";
+            } else {
+                cout << "Erro: Nao foi possivel plantar (posicao ocupada ou invalida).\n";
+            }
+        }
+        jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "larga") {
         cout << "\nA executar comando larga: Largando ferramenta da mão";
@@ -197,14 +235,13 @@ void Simulador::iniciar() {
                 cout << "\nComando invalido na fase 1. Use 'jardim' <n> <n>, 'executa' <nome_ficheiro>' ou 'fim'." << endl;
         }
         else { // Fase de execução de comandos
-            if (!input.empty())
+            if (!input.empty()) {
                 RespostaComando = VerificarComandos(input, ListaDeComandos);
-
-            if (!RespostaComando.empty())
-                processarComandos(RespostaComando); // Processa o comando
-            else
-                cout << "\nComando nao encontrado, ou invalido. Tente novamente.";
-
+                if (!RespostaComando.empty())
+                    processarComandos(RespostaComando); // Processa o comando
+                else
+                    cout << "\nComando nao encontrado, ou invalido. Tente novamente.";
+            }
         }
         // Limpeza das variaveis de verificacao de input
         input.clear();
