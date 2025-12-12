@@ -16,7 +16,7 @@ class Jardineiro {
     int lin,col;
     bool dentroDoJardim;
 
-    Ferramenta* ferramentas[3]; // array fixo
+    vector<shared_ptr<Ferramenta>> inventario;
 
     int movimentosRestantes;
     int plantacoesRestantes;
@@ -25,29 +25,34 @@ class Jardineiro {
 public:
     Jardineiro();
 
-    int getLinhas();
-    int getColunas();
+    int getLinhas() const;
+    int getColunas() const;
 
     void entra(const char& l, const char& c);
     void sai();
     bool estaNoJardim() const;
+
+    void setPosicao(int l, int c);
     string getPosicao() const;
 
-    void mover(char direcao);
+    void adicionarFerramenta(shared_ptr<Ferramenta> f);
+    void removerFerramenta(shared_ptr<Ferramenta> f);
+    shared_ptr<Ferramenta> getFerramentaNoIndice(int indice);
+    int getNumFerramentas() const;
+
     void resetTurno();
+
+    bool podeMover() const;
+    void mover(char direcao);
 
     void planta();
     void colhe();
 
     bool podePlantar() const;
     bool podeColher() const;
-    bool podeMover() const;
 
     void pega(int indice);
     void larga();
-
-    void adicionarFerramenta(Ferramenta* f);
-    Ferramenta* getFerramentaNaMao() const;
 };
 
 #endif //TP_2025_2026_JARDINEIRO_H

@@ -177,18 +177,41 @@ int Simulador::processarComandos(const string& RespostaComando) {
     else if (ComandoParaExecutar[0] == "apaga") {
         cout << "\nA executar comando apaga: Apagando buffer com nome " << ComandoParaExecutar[1];
     }
-    else if (ComandoParaExecutar[0] == "e") {
-        cout << "\nA mover jardineiro para a esquerda";
-    }
-    else if (ComandoParaExecutar[0] == "d") {
-        cout << "\nA mover jardineiro para a direita";
-    }
-    else if (ComandoParaExecutar[0] == "c") {
-        cout << "\nA mover jardineiro para cima";
-    }
-    else if (ComandoParaExecutar[0] == "b") {
-        cout << "\nA mover jardineiro para baixo";
-    }
+
+    else if (ComandoParaExecutar[0] == "e" || ComandoParaExecutar[0] == "d" ||
+             ComandoParaExecutar[0] == "c" || ComandoParaExecutar[0] == "b") {
+
+        int dLin = 0, dCol = 0;
+        string cmd = ComandoParaExecutar[0];
+
+        if (cmd == "e") dCol = -1;
+        else if (cmd == "d") dCol = 1;
+        else if (cmd == "c") dLin = -1;
+        else if (cmd == "b") dLin = 1;
+
+        Jardineiro& j = jardim.getJardineiro();
+
+        if (!j.estaNoJardim()) {
+            cout << "O jardineiro nao esta no jardim! Use 'entra <l><c>' primeiro.\n";
+        }
+        else if (!j.podeMover()) {
+            cout << "O jardineiro esta exausto! (Sem movimentos restantes)\n";
+        }
+        else {
+            int novaL = j.getLinhas() + dLin;
+            int novaC = j.getColunas() + dCol;
+
+            if (jardim.posicaoValida(novaL, novaC)) {
+                j.mover(cmd[0]); // Desconta o movimento
+                j.setPosicao(novaL, novaC);
+                cout << "Moveu-se para " << cmd << ".\n";
+            } else {
+                cout << "Movimento invalido (fora dos limites).\n";
+            }
+        }
+        jardim.mostrar();
+             }
+
     else if (ComandoParaExecutar[0] == "fim") {
         cout << "\n A sair do ciclo de verificacao de comandos";
         return 0;
