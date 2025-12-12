@@ -85,8 +85,9 @@ int Simulador::processarComandos(const string& RespostaComando) {
         cout << "\nA executar comando lferr: Listando ferramentas transportadas";
     }
     else if (ComandoParaExecutar[0] == "colhe") {
+        if (ComandoParaExecutar.size() < 3) return 1;
         char lChar = ComandoParaExecutar[1][0];
-        char cChar = ComandoParaExecutar[1][1];
+        char cChar = ComandoParaExecutar[2][0];
         int l = Solo::letraParaIndice(lChar);
         int c = Solo::letraParaIndice(cChar);
 
@@ -96,9 +97,15 @@ int Simulador::processarComandos(const string& RespostaComando) {
         jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "planta") {
+
+        if (ComandoParaExecutar.size() < 4) {
+            cout << "Erro: Argumentos insuficientes.\n";
+            return 1;
+        }
+
         char lChar = ComandoParaExecutar[1][0];
-        char cChar = ComandoParaExecutar[1][1];
-        char tipo = tolower(ComandoParaExecutar[2][0]); // Tipo da planta (c, r, e, x)
+        char cChar = ComandoParaExecutar[2][0];
+        char tipo = tolower(ComandoParaExecutar[3][0]); // Tipo da planta (c, r, e, x)
 
         int l = Solo::letraParaIndice(lChar);
         int c = Solo::letraParaIndice(cChar);
