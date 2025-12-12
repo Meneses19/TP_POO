@@ -43,7 +43,21 @@ int Simulador::processarComandos(const string& RespostaComando) {
         // Implementacao para carregar e executar comandos de um ficheiro
     }
     else if (ComandoParaExecutar[0] == "avanca") {
-        cout << "\nA avancar " << (ComandoParaExecutar.size() > 1 ? ComandoParaExecutar[1] : "1") << " instantes";
+        int n = 1;
+        // Verifica se o utilizador escreveu um número
+        if (ComandoParaExecutar.size() > 1) {
+            try {
+                n = stoi(ComandoParaExecutar[1]);
+            } catch (...) {
+                cout << "Numero invalido. A avancar 1 instante.";
+                n = 1;
+            }
+        }
+        cout << "\nA avancar " << n << " instantes...\n";
+        // Chama a função que acabámos de criar
+        jardim.avancarTempo(n);
+        // Mostra o resultado na consola
+        jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "lplantas") {
         cout << "\nA executar comando lplantas";

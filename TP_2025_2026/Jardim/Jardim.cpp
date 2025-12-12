@@ -153,6 +153,52 @@ void Jardim::getJardineiroLinCol(int& l, int& col) {
 }
 
 void Jardim::avancarTempo(int instantes) {
-    for(int t=0; t<instantes; t++) {
+    for (int t = 0; t < instantes; ++t) {
+
+        for (auto it = plantas.begin(); it != plantas.end(); ) {
+            shared_ptr<Planta> p = *it;
+            int l = p->getLinha();
+            int c = p->getColuna();
+
+            int aguaAntes = grelha[l][c].getAgua();
+            int nutriAntes = grelha[l][c].getNutrientes();
+
+            int aguaSimulada = aguaAntes;
+            int nutriSimulada = nutriAntes;
+
+            p->avancaInstante(aguaSimulada, nutriSimulada);
+
+            int diffAgua = aguaSimulada - aguaAntes;
+            int diffNutri = nutriSimulada - nutriAntes;
+
+
+            if (diffAgua > 0) {
+                // A planta adicionou água
+                grelha[l][c].adicionarAgua(diffAgua);
+            } else if (diffAgua < 0) {
+                // A planta consumiu água
+                grelha[l][c].retirarAgua(-diffAgua);
+            }
+
+            if (diffNutri > 0) {
+                // A planta devolveu nutrientes
+                grelha[l][c].adicionarNutrientes(diffNutri);
+            } else if (diffNutri < 0) {
+                // A planta consumiu nutrientes
+                grelha[l][c].retirarNutrientes(-diffNutri);
+            }
+
+            // Verificar se a planta morreu
+            if (!p->isViva()) {
+                // Remove da Grelha
+                grelha[l][c].removerPlanta();
+                // Remove do Vector e atualiza o iterador para o próximo elemento
+                it = plantas.erase(it);
+
+                cout << "Planta morreu na posicao " << l << " " << c << endl;
+            } else {
+                ++it;
+            }
+        }
     }
 }

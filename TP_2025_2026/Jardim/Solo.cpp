@@ -46,11 +46,13 @@ void Solo::adicionarNutrientes(int quantidade) {
     if (this->nutrientes < 0) this->nutrientes = 0;
 }
 void Solo::retirarAgua(int quantidade) {
-    adicionarAgua(-quantidade);
+    this->agua -= quantidade;
+    if (this->agua < 0) this->agua = 0;
 }
 
 void Solo::retirarNutrientes(int quantidade) {
-    adicionarNutrientes(-quantidade);
+    this->nutrientes -= quantidade;
+    if (this->nutrientes < 0) this->nutrientes = 0;
 }
 
 // --- Gestão de Planta ---
