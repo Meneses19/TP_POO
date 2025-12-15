@@ -27,7 +27,8 @@ public:
 
 
     virtual void avancaInstante(int& soloAgua, int& soloNutrientes) = 0;
-
+    virtual string getDescricao() const;
+    string getNome() const;
     string getTipo() const;
     int getLinha() const;
     int getColuna() const;

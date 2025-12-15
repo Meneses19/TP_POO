@@ -151,6 +151,54 @@ void Jardim::getJardineiroLinCol(int& l, int& col) {
     l = jardineiro.getLinhas();
     col = jardineiro.getColunas();
 }
+// --- Comandos de Informação ---
+
+void Jardim::listarTodasPlantas() const {
+    if (plantas.empty()) {
+        cout << "Nao ha plantas vivas no jardim.\n";
+        return;
+    }
+
+    cout << "\n--- Lista de Plantas (" << plantas.size() << ") ---\n";
+    for (const auto& p : plantas) {
+        cout << p->getDescricao() << "\n";
+    }
+    cout << "------------------------------\n";
+}
+
+void Jardim::mostrarDetalhesPlanta(int l, int c) const {
+    if (!posicaoValida(l, c)) {
+        cout << "Posicao invalida.\n";
+        return;
+    }
+
+    if (grelha[l][c].temPlanta()) {
+        cout << "\n--- Detalhes da Planta ---\n";
+        cout << grelha[l][c].getPlanta()->getDescricao() << "\n";
+    } else {
+        cout << "Nao existe nenhuma planta na posicao indicada.\n";
+    }
+}
+
+void Jardim::mostrarDetalhesSolo(int l, int c) const {
+    if (!posicaoValida(l, c)) {
+        cout << "Posicao invalida.\n";
+        return;
+    }
+
+    int agua = grelha[l][c].getAgua();
+    int nutri = grelha[l][c].getNutrientes();
+
+    cout << "\n--- Estado do Solo [" << (char)('a' + l) << (char)('a' + c) << "] ---\n";
+    cout << "Agua: " << agua << "\n";
+    cout << "Nutrientes: " << nutri << "\n";
+
+    if (grelha[l][c].temPlanta()) {
+        cout << "Ocupante: " << grelha[l][c].getPlanta()->getNome() << "\n";
+    } else {
+        cout << "Ocupante: (Vazio)\n";
+    }
+}
 
 void Jardim::avancarTempo(int instantes) {
     for (int t = 0; t < instantes; ++t) {

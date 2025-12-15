@@ -64,18 +64,33 @@ int Simulador::processarComandos(const string& RespostaComando) {
         jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "lplantas") {
-        cout << "\nA executar comando lplantas";
+        cout << "\nA executar comando lplantas...\n";
+        jardim.listarTodasPlantas();
     }
     else if (ComandoParaExecutar[0] == "lplanta") {
-        cout << "\nA executar comando lplanta: Listando a planta na posicao " << ComandoParaExecutar[1] << " " << ComandoParaExecutar[2];
+        if (ComandoParaExecutar.size() < 3) {
+            cout << "Erro: Indique a posicao (ex: lplanta a a)\n";
+        } else {
+            char lChar = ComandoParaExecutar[1][0];
+            char cChar = ComandoParaExecutar[2][0];
+
+            int l = Solo::letraParaIndice(lChar);
+            int c = Solo::letraParaIndice(cChar);
+
+            jardim.mostrarDetalhesPlanta(l, c);
+        }
     }
     else if (ComandoParaExecutar[0] == "lsolo") {
-        if (ComandoParaExecutar.size() == 3)
-            cout << "\nA executar comando lsolo na posicao " << ComandoParaExecutar[1] << " " << ComandoParaExecutar[2];
-        else if (ComandoParaExecutar.size() == 4) {
-            cout << "\nA executar comando lsolo na posicao " << ComandoParaExecutar[1] << " "
-                 << ComandoParaExecutar[2]
-                 << " com profundidade " << ComandoParaExecutar[3];
+        if (ComandoParaExecutar.size() < 3) {
+            cout << "Erro: Indique a posicao (ex: lsolo a a)\n";
+        } else {
+            char lChar = ComandoParaExecutar[1][0];
+            char cChar = ComandoParaExecutar[2][0];
+
+            int l = Solo::letraParaIndice(lChar);
+            int c = Solo::letraParaIndice(cChar);
+
+            jardim.mostrarDetalhesSolo(l, c);
         }
     }
     else if (ComandoParaExecutar[0] == "larea") {

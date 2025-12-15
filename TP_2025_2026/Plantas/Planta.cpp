@@ -4,6 +4,7 @@
 
 #include "Planta.h"
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -17,6 +18,18 @@ Planta::Planta(const string& tipo, int linha, int coluna, int nutrientes, int ag
           estado(estado),
           displayChar(displayChar)
 {
+}
+string Planta::getDescricao() const {
+    stringstream ss;
+    ss << "[" << displayChar << "] " << tipo
+       << " (" << (char)('a' + linha) << (char)('a' + coluna) << ")"
+       << " | Saude(Agua/Nutri): " << agua << "/" << nutrientes
+       << " | Beleza: " << beleza
+       << " | Estado: " << (estado ? "Viva" : "Morta");
+    return ss.str();
+}
+string Planta::getNome() const {
+    return tipo;
 }
 string Planta::getTipo() const {
     return tipo;

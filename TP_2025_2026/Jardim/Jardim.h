@@ -54,6 +54,10 @@ public:
     int getColunas() const;
 
     void avancarTempo(int instantes);
+
+    void listarTodasPlantas() const;
+    void mostrarDetalhesPlanta(int l, int c) const;
+    void mostrarDetalhesSolo(int l, int c) const;
 };
 
 #endif //TP_2025_2026_JARDIM_H
