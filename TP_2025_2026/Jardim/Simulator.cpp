@@ -48,7 +48,6 @@ int Simulador::processarComandos(const string& RespostaComando) {
     }
     else if (ComandoParaExecutar[0] == "avanca") {
         int n = 1;
-        // Verifica se o utilizador escreveu um número
         if (ComandoParaExecutar.size() > 1) {
             try {
                 n = stoi(ComandoParaExecutar[1]);
@@ -58,9 +57,11 @@ int Simulador::processarComandos(const string& RespostaComando) {
             }
         }
         cout << "\nA avancar " << n << " instantes...\n";
-        // Chama a função que acabámos de criar
+
         jardim.avancarTempo(n);
-        // Mostra o resultado na consola
+
+        jardim.getJardineiro().resetTurno();
+
         jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "lplantas") {
@@ -157,17 +158,22 @@ int Simulador::processarComandos(const string& RespostaComando) {
         cout << "\nA executar comando compra: Comprando ferramenta do tipo " << ComandoParaExecutar[1];
     }
     else if (ComandoParaExecutar[0] == "entra") {
-        cout << "\nA executar comando entra: Jardineiro a entrar do jardim\n";
-        if(jardim.posicaoValida(ComandoParaExecutar[1][0],ComandoParaExecutar[2][0])){
-            jardim.JardineiroEntra(ComandoParaExecutar[1][0],ComandoParaExecutar[2][0]);
+        // Validação de argumentos
+        if (ComandoParaExecutar.size() < 3) {
+            cout << "Erro: Indique a posicao (ex: entra a a)\n";
+        } else {
+            char lChar = ComandoParaExecutar[1][0];
+            char cChar = ComandoParaExecutar[2][0];
 
-            int l = Solo::letraParaIndice(ComandoParaExecutar[1][0]);
-            int c = Solo::letraParaIndice(ComandoParaExecutar[2][0]);
-            buffer.coloca(l,c,'*');
-            buffer.display();
+            cout << "\nA tentar entrar na posicao " << lChar << cChar << "...\n";
+
+            if(jardim.posicaoValida(lChar, cChar)){
+                jardim.JardineiroEntra(lChar, cChar);
+            } else {
+                cout << "Posicao invalida ou fora do jardim.\n";
+            }
         }
-
-        cout << "\nA executar comando entra na posicao " << ComandoParaExecutar[1] << " " << ComandoParaExecutar[2];
+        jardim.mostrar();
     }
     else if (ComandoParaExecutar[0] == "sai") {
         cout << "\nA executar comando sai: Jardineiro a sair do jardim\n";
