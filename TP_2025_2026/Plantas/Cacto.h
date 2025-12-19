@@ -13,10 +13,10 @@ private:
 public:
     // Construtor
     Cacto(int linha, int coluna);
-
     // Destrutor
     ~Cacto() override = default;
-
+    shared_ptr<Planta> duplicar(int l, int c) const override;
+    bool deveReproduzir() const override;
     void avancaInstante(int& soloAgua, int& soloNutrientes) override;
 };
 #endif //TP_2025_2026_CACTO_H

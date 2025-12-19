@@ -20,6 +20,7 @@ class Jardim {
 
     vector<shared_ptr<Planta>> plantas;
     vector<shared_ptr<Ferramenta>> ferramentas;
+    vector<pair<int, int>> getVizinhosLivres(int l, int c) const;
     Jardineiro jardineiro;
 
 public:

@@ -13,6 +13,8 @@ public:
     Exotica(int linha, int coluna);
     ~Exotica() override = default;
     void avancaInstante(int& soloAgua, int& soloNutrientes) override;
+    shared_ptr<Planta> duplicar(int l, int c) const override;
+    bool deveReproduzir() const override;
 };
 
 #endif //TP_2025_2026_EXOTICA_H

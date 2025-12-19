@@ -27,6 +27,8 @@ public:
 
 
     virtual void avancaInstante(int& soloAgua, int& soloNutrientes) = 0;
+    virtual shared_ptr<Planta> duplicar(int l, int c) const = 0;
+    virtual bool deveReproduzir() const = 0;
     virtual string getDescricao() const;
     string getNome() const;
     string getTipo() const;

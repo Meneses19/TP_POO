@@ -19,7 +19,13 @@ Cacto::Cacto(int linha, int coluna)
           instantesNutrientesBaixos(0)
 {
 }
-
+shared_ptr<Planta> Cacto::duplicar(int l, int c) const {
+    return make_shared<Cacto>(l, c);
+}
+bool Cacto::deveReproduzir() const {
+    return (getNutrientes() > Settings::Cacto::multiplica_nutrientes_maior) &&
+           (getAgua() > Settings::Cacto::multiplica_agua_maior);
+}
 void Cacto::avancaInstante(int& soloAgua, int& soloNutrientes) {
 
     if (!isViva()) {

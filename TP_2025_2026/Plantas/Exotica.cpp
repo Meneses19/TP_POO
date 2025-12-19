@@ -20,7 +20,12 @@ Exotica::Exotica(int linha, int coluna)
           instantesCiclo(0)
 {
 }
-
+shared_ptr<Planta> Exotica::duplicar(int l, int c) const {
+    return make_shared<Exotica>(l, c);
+}
+bool Exotica::deveReproduzir() const {
+    return false; // Exóticas não se reproduzem sozinhas, exeplo
+}
 // --- Comportamento a cada Instante ---
 void Exotica::avancaInstante(int& soloAgua, int& soloNutrientes) {
 

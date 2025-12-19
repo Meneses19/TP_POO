@@ -4,6 +4,7 @@
 
 #include "Jardim.h"
 #include <algorithm>
+#include <random>
 
 Jardim::Jardim() : grelha(nullptr), linhas(0), colunas(0){
 }
@@ -203,50 +204,72 @@ void Jardim::mostrarDetalhesSolo(int l, int c) const {
 void Jardim::avancarTempo(int instantes) {
     for (int t = 0; t < instantes; ++t) {
 
+        vector<shared_ptr<Planta>> novasPlantas;
+
         for (auto it = plantas.begin(); it != plantas.end(); ) {
             shared_ptr<Planta> p = *it;
             int l = p->getLinha();
             int c = p->getColuna();
 
-            int aguaAntes = grelha[l][c].getAgua();
-            int nutriAntes = grelha[l][c].getNutrientes();
+            int aguaSolo = grelha[l][c].getAgua();
+            int nutriSolo = grelha[l][c].getNutrientes();
 
-            int aguaSimulada = aguaAntes;
-            int nutriSimulada = nutriAntes;
+            int aAntes = aguaSolo;
+            int nAntes = nutriSolo;
 
-            p->avancaInstante(aguaSimulada, nutriSimulada);
+            p->avancaInstante(aguaSolo, nutriSolo); // Planta come
 
-            int diffAgua = aguaSimulada - aguaAntes;
-            int diffNutri = nutriSimulada - nutriAntes;
+            grelha[l][c].adicionarAgua(aguaSolo - aAntes);
+            grelha[l][c].adicionarNutrientes(nutriSolo - nAntes);
 
-
-            if (diffAgua > 0) {
-                // A planta adicionou água
-                grelha[l][c].adicionarAgua(diffAgua);
-            } else if (diffAgua < 0) {
-                // A planta consumiu água
-                grelha[l][c].retirarAgua(-diffAgua);
-            }
-
-            if (diffNutri > 0) {
-                // A planta devolveu nutrientes
-                grelha[l][c].adicionarNutrientes(diffNutri);
-            } else if (diffNutri < 0) {
-                // A planta consumiu nutrientes
-                grelha[l][c].retirarNutrientes(-diffNutri);
-            }
-
-            // Verificar se a planta morreu
             if (!p->isViva()) {
-                // Remove da Grelha
                 grelha[l][c].removerPlanta();
-                // Remove do Vector e atualiza o iterador para o próximo elemento
                 it = plantas.erase(it);
+                continue;
+            }
 
-                cout << "Planta morreu na posicao " << l << " " << c << endl;
-            } else {
-                ++it;
+            if (p->deveReproduzir()) {
+
+                vector<pair<int, int>> vizinhos = getVizinhosLivres(l, c);
+
+                if (!vizinhos.empty()) {
+                    int idx = rand() % vizinhos.size();
+                    int novaL = vizinhos[idx].first;
+                    int novaC = vizinhos[idx].second;
+
+                    // Cria o clone
+                    shared_ptr<Planta> bebe = p->duplicar(novaL, novaC);
+                    novasPlantas.push_back(bebe);
+                    int custo = p->getNutrientes() / 2;
+                    p->setNutrientes(0); // (Opcional, não sei se é para a mãe perder os nutrientes ou não)
+                }
+            }
+
+            ++it;
+        }
+        for (auto& bebe : novasPlantas) {
+            if (!grelha[bebe->getLinha()][bebe->getColuna()].temPlanta()) {
+                grelha[bebe->getLinha()][bebe->getColuna()].setPlanta(bebe);
+                plantas.push_back(bebe);
             }
         }
     }
+}
+vector<pair<int, int>> Jardim::getVizinhosLivres(int l, int c) const {
+    vector<pair<int, int>> livres;
+
+    int dLin[] = {-1, 1, 0, 0};
+    int dCol[] = {0, 0, -1, 1};
+
+    for (int i = 0; i < 4; i++) {
+        int nl = l + dLin[i];
+        int nc = c + dCol[i];
+
+        if (posicaoValida(nl, nc)) {
+            if (!grelha[nl][nc].temPlanta()) {
+                livres.push_back({nl, nc});
+            }
+        }
+    }
+    return livres;
 }

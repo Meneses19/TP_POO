@@ -19,10 +19,9 @@ public:
     void avancaInstante(int& soloAgua, int& soloNutrientes) override;
 
 
-
-    // Verifica se a Erva Daninha tem condições para se multiplicar.
-    // @return true se nutrientes > 30 e cooldown > 5
-
+    shared_ptr<Planta> duplicar(int l, int c) const override;
+    // retorna true se nutrientes > 30 e cooldown > 5
+    bool deveReproduzir() const override;
     bool podeMultiplicar() const;
 
 

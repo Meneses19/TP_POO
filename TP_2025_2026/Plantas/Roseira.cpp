@@ -19,7 +19,12 @@ Roseira::Roseira(int linha, int coluna)
 )
 {
 }
-
+shared_ptr<Planta> Roseira::duplicar(int l, int c) const {
+    return make_shared<Roseira>(l, c);
+}
+bool Roseira::deveReproduzir() const {
+    return getNutrientes() > Settings::Roseira::multiplica_nutrientes_maior;
+}
 void Roseira::avancaInstante(int& soloAgua, int& soloNutrientes) {
 
     if (!isViva()) {

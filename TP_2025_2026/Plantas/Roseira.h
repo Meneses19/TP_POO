@@ -16,6 +16,8 @@ public:
 
     // Implementação do "contrato" virtual de Planta
     void avancaInstante(int& soloAgua, int& soloNutrientes) override;
+    shared_ptr<Planta> duplicar(int l, int c) const override;
+    bool deveReproduzir() const override;
 };
 
 #endif //TP_2025_2026_ROSEIRA_H

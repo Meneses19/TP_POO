@@ -20,7 +20,13 @@ ErvaDaninha::ErvaDaninha(int linha, int coluna)
           instantesDesdeMultiplicacao(0)
 {
 }
-
+shared_ptr<Planta> ErvaDaninha::duplicar(int l, int c) const {
+    return make_shared<ErvaDaninha>(l, c);
+}
+bool ErvaDaninha::deveReproduzir() const {
+    return (getNutrientes() > Settings::ErvaDaninha::multiplica_nutrientes_maior) &&
+           (this->instantesDesdeMultiplicacao > Settings::ErvaDaninha::multiplica_instantes);
+}
 void ErvaDaninha::avancaInstante(int& soloAgua, int& soloNutrientes) {
 
     if (!isViva()) {
